@@ -1,3 +1,6 @@
 <resources>
+
+
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">jQLlMAZx6wjGyDCGaH8idMpgnGZ34kaorrXaZ</string>
     <string name="app_name">sitmaster</string>
 </resources>
