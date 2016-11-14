@@ -1,38 +1,26 @@
 // 'use strict';
 
-// import Realm from 'realm';
+import Realm from 'realm';
 
-// class Postliked extends Realm.Object {}
-// Postliked.schema = {
-//   name:'Postliked',  
-//   properties:{
-//     post_id:'int',
-//     user_id:'int',
-//     done: {type: 'bool', default: false},
-//   },
-// };
-
-// class Follower extends Realm.Object {}
-// Follower.schema = {
-//   name:'Follower',
-//   properties:{
-//     followed_id:'int',
-//     follower_id:'int',
-//     follow: {type: 'bool', default: false},
-//   }
-// };
-
-// class Users extends Realm.Object {}
-// Users.schema = {
-//   name:'User',
-//   primaryKey: 'id',   
-//   properties:{
-//       id:'int',
-//       userId:'int',
-//       username:'string',
-//       accessToken:'string',
-//   }
-// };
+class Users extends Realm.Object {}
+Users.schema = {
+  name:'User',
+  primaryKey: 'id',   
+  properties:{
+		  user_id:'int',
+		  cat_id:'int',
+		  cat_level:'int',
+		  role_id:'int',
+		  username:'string',
+		  email:'string',
+		  auth_key:'string',
+		  confirmed_at:'int',
+		  registration_ip:'int',
+		  created_at:'int',
+		  updated_at:'int',
+		  flags:'int',
+  }
+};
 
 // class Profile extends Realm.Object {}
 // Profile.schema = {

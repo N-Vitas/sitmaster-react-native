@@ -1,10 +1,12 @@
 import globalApp from '../containers/NavApp/reducer';
+import globalAuth from '../containers/NavAuth/reducer';
+import tabsApp from '../containers/Drawer/reducer';
+import {session} from '../containers/Auth/reducer';
 // import tabs from './components/AppTabs/reducer';
 // import AuthNavigation from './components/AuthNavigation/reducer';
 // import {postList} from './components/Post/reducer';
 // import {profileState} from './components/Profile/reducer';
 // import {gustomProfileState} from './components/GustomProfile/reducer';
-// import {session} from './components/Auth/reducer';
 // import {createPost} from './components/CreatePost/reducer';
 // import {loginState} from './components/Login/reducer';
 // import {signinState} from './components/Signin/reducer';
@@ -20,11 +22,13 @@ import { combineReducers } from 'redux-immutable';
 
 const applicationReducers = {
 	globalApp,
+	globalAuth,
+	tabsApp,
+	session,
 	// postList,
 	// profileState,
 	// gustomProfileState,
 	// createPost,
-	// session,
 	// tabs,
 	// AuthNavigation,
 	// loginState,
