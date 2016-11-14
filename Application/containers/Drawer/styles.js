@@ -3,7 +3,7 @@ const {width,height} = Dimensions.get('window');
 /*template color*/
 const template = {
 	color:{
-		base:'#292B3A',
+		base:'#3f51b5',
 		link:'#00A9F0',
 		video:'#5AC8FA',
 		notes:'#FFCC00',
@@ -195,8 +195,8 @@ export default StyleSheet.create({
     marginLeft:10,
     marginRight:0,
     marginBottom:0,
-		resizeMode:'contain',
-
+    color:template.color.link,
+    fontSize:20
 	},
 	toolbar: {
 		backgroundColor: template.color.base,
