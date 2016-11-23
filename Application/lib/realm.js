@@ -4,21 +4,20 @@ import Realm from 'realm';
 
 class Users extends Realm.Object {}
 Users.schema = {
-  name:'User',
+  name:'Users',
   primaryKey: 'id',   
   properties:{
-		  user_id:'int',
-		  cat_id:'int',
-		  cat_level:'int',
-		  role_id:'int',
-		  username:'string',
-		  email:'string',
-		  auth_key:'string',
-		  confirmed_at:'int',
-		  registration_ip:'int',
-		  created_at:'int',
-		  updated_at:'int',
-		  flags:'int',
+		id:'int',
+		user_id:'int',
+		cat_id:'int',
+		cat_level:'int',
+		role_id:'int',
+		username:'string',
+		email:'string',
+		auth_key:'string',
+		name:'string',
+		phone:'string',
+		location:'string',
   }
 };
 
@@ -40,16 +39,16 @@ Users.schema = {
 //   }
 // };
 
-// export default new Realm({
-//   schema: [Users, Postliked, Follower, Profile],
-//   schemaVersion:1,
-//   migration:(oldRealm, newRealm)=>{
-//     if(oldRealm.schemaVersion < 1){
-//       var oldObject = oldRealm.objects('Profile');
-//       var newObject = newRealm.objects('Profile');
-//       // for (var i = 0; i < oldObject.length; i++) {
-//       //   newObject[i]
-//       // }
-//     }
-//   }
-// });
+export default new Realm({
+  schema: [Users],
+  schemaVersion:1,
+  // migration:(oldRealm, newRealm)=>{
+  //   if(oldRealm.schemaVersion < 1){
+  //     // var oldObject = oldRealm.objects('Profile');
+  //     // var newObject = newRealm.objects('Profile');
+  //     // for (var i = 0; i < oldObject.length; i++) {
+  //     //   newObject[i]
+  //     // }
+  //   }
+  // }
+});

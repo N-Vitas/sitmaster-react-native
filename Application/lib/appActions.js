@@ -29,7 +29,10 @@ function getAuth(dispatch,props){
         role_id:responseData.role_id,
         username:responseData.username,
         email:responseData.email,
-        auth_key:responseData.auth_key
+        auth_key:responseData.auth_key,
+        name:responseData.profile.name,
+        phone:responseData.profile.phone,
+        location:responseData.profile.location,
 			});
 			return;
 		}else{
