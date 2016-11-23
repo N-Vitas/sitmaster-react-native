@@ -4,6 +4,7 @@ import {Button,Icon} from 'native-base';
 import DrawerLayoutAndroid from 'DrawerLayoutAndroid';
 import ToolbarAndroid from 'ToolbarAndroid';
 import { actions as NavActions } from '../../lib/navigation-redux-helpers';
+import AppActions from '../../lib/appActions';
 import Test from '../Test';
 import { connect } from 'react-redux';
 import styles from './styles';
@@ -32,6 +33,10 @@ class Drawer extends Component {
 	render() {
 		const onNavigate = (action) => {
 			console.log(action);
+			if(action.payload.routeIndex == 9){
+				this.props.dispatch({type:AppActions.AUTH_LOGOUT});
+				return;	
+			}
 			this.drawer.closeDrawer();
 			this.props.dispatch(action);
 		};

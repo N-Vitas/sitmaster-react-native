@@ -13,7 +13,7 @@ class Root extends Component {
   render() {
     return (
       <View style={styles.container}>  
-        {!this.props.isLoggeIn ? <NavApp/>:<NavAuth/>}      
+        {this.props.isLoggeIn ? <NavApp/>:<NavAuth/>}      
       </View>
     );
   }

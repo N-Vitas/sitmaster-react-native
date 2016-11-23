@@ -1,29 +1,47 @@
 // import realm from '../../realm';
-// import appActions from '../../appActions';
+import AppActions from '../../lib/appActions';
 
 export const initialSession = {
   isLoggeIn:false,
   user_id:0,
   cat_id:0,
   cat_level:0,
-  role_id:0,
+  role_id:1,
   username:'',
+  password:'',
   email:'',
   auth_key:'',
-  confirmed_at:0,
-  registration_ip:0,
-  created_at:0,
-  updated_at:0,
-  flags:0,
+  loaded:false,
+  error:false,
+  message:false,
 };
-
 export function session(state = initialSession, action) { 
   // let realmPostLiked = realm.objects('Postliked');
   // let realmFollower = realm.objects('Follower');
   // let users = realm.objects('User');
   // let appUser = users.filtered('id == 1');
   switch (action.type) {
-   //  case appActions.AUTH_UPDATE_KEY:
+    case AppActions.AUTH_CHANGELOGIN:
+      return {...state,username:action.username};
+    case AppActions.AUTH_CHANGEPASSWORD:
+      return {...state,password:action.password};
+    case AppActions.AUTH_ERROR:
+      return {...state,error:action.error,message:action.message};
+    case AppActions.AUTH_LOGGEIN:
+      return {...state,
+        error:action.error,
+        message:action.message,
+        user_id:action.user_id,
+        cat_id:action.cat_id,
+        cat_level:action.cat_level,
+        role_id:action.role_id,
+        username:action.username,
+        email:action.email,
+        auth_key:action.auth_key,
+        isLoggeIn:true
+      };
+    case AppActions.AUTH_LOGOUT:
+      return initialSession;
    //    if(Array.isArray(appUser) || appUser.length > 0){
    //      realm.write(()=>{
    //        appUser[0].accessToken = String(action.accessToken)

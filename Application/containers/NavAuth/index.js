@@ -3,6 +3,7 @@ import { View, NavigationExperimental,BackAndroid,Platform } from 'react-native'
 import NavigationHeaderBackButton from 'NavigationHeaderBackButton';
 import React, { Component } from 'react';
 import { actions } from '../../lib/navigation-redux-helpers';
+import Helpers from '../../lib/helpers';
 import { connect } from 'react-redux';
 import {Icon} from 'native-base';
 import BackButton from '../../components/BackButton';
@@ -53,7 +54,7 @@ class NavAuth extends Component {
 	}
 
 	_renderOverlay(props) {
-    // if (Helpers.showHeader(props.scene.route.key)) {
+    if (Helpers.showHeader(props.scene.route.key)) {
       return (
         <NavigationHeader
         {...props}
@@ -63,8 +64,8 @@ class NavAuth extends Component {
         renderRightComponent={this._renderRightComponent.bind(this)}
         />
       );
-    // }
-    // return null;
+    }
+    return null;
   }
   _renderTitleComponent(props) {
     return (
