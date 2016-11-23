@@ -2,7 +2,7 @@ import globalApp from '../containers/NavApp/reducer';
 import globalAuth from '../containers/NavAuth/reducer';
 import tabsApp from '../containers/Drawer/reducer';
 import {session} from '../containers/Auth/reducer';
-// import tabs from './components/AppTabs/reducer';
+import {ticket} from '../containers/Ticket/reducer';
 // import AuthNavigation from './components/AuthNavigation/reducer';
 // import {postList} from './components/Post/reducer';
 // import {profileState} from './components/Profile/reducer';
@@ -25,6 +25,7 @@ const applicationReducers = {
 	globalAuth,
 	tabsApp,
 	session,
+	ticket,
 	// postList,
 	// profileState,
 	// gustomProfileState,

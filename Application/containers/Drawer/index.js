@@ -8,6 +8,9 @@ import AppActions from '../../lib/appActions';
 import Test from '../Test';
 import { connect } from 'react-redux';
 import styles from './styles';
+
+import Ticket from '../Ticket';
+
 const { jumpTo,pushRoute,popRoute,  } = NavActions;
 const { width, height } = Dimensions.get('window');
 
@@ -15,10 +18,10 @@ const { width, height } = Dimensions.get('window');
 class Drawer extends Component {
 	_renderTabContent(tab) {
 		switch(tab.key){
-			case 'maps': return (<Test bg="red"/>);
-			case 'notification': return (<Test bg="green"/>);
+			case 'home': return (<Ticket/>);
+			case 'create': return (<Test bg="green"/>);
 			case 'profile': return (<Test bg="blue" />);
-			case 'post': return (<Test bg="yellow" />);
+			case 'contact': return (<Test bg="yellow" />);
 			default: return (<Test/>);
 		}
 	}
@@ -32,11 +35,6 @@ class Drawer extends Component {
 	}
 	render() {
 		const onNavigate = (action) => {
-			console.log(action);
-			if(action.payload.routeIndex == 9){
-				this.props.dispatch({type:AppActions.AUTH_LOGOUT});
-				return;	
-			}
 			this.drawer.closeDrawer();
 			this.props.dispatch(action);
 		};
@@ -47,7 +45,7 @@ class Drawer extends Component {
 					return (
 						<TouchableOpacity
 							style={styles.tabItems}
-							onPress={ () => onNavigate(jumpTo(i,navigation.key)) }
+							onPress={ () => {t.key === 'exit' ? this.props.dispatch({type:AppActions.AUTH_LOGOUT}) : onNavigate(jumpTo(i,navigation.key))} }
 							key={ t.key }>
 							<Icon style={styles.tabIcon} name={t.icon} />
 							<Text style={styles.tabText}>{ t.title }</Text>

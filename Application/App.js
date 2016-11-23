@@ -1,7 +1,6 @@
 import Root from './containers/Root';
 import React from 'React';
 import {Provider} from 'react-redux';
-import styles from './components/template_styles';
 import configureStore from './lib/store';
 import ProgressBar from './components/ProgressBar';
 const store = configureStore();
@@ -14,6 +13,7 @@ import {
   TouchableOpacity,
   View,
 }from 'react-native';
+import {Button,Icon} from 'native-base';
 import codePush from "react-native-code-push";
 
 const {width,height} = Dimensions.get('window');
@@ -86,7 +86,7 @@ class App extends React.Component {
     if(!this.state.progress)
       return null;
     let progress = this.state.progress.receivedBytes/this.state.progress.totalBytes;
-    return <ProgressBar style={{marginTop: 10, width: (width-16)}} initialProgress={0} progress={progress}/>
+    return <ProgressBar style={styles.progress} backgroundStyle={{backgroundColor: 'red'}} fillStyle={{backgroundColor: 'white'}} initialProgress={0} progress={progress}/>
   }
   render() {
     if(this.state.complete){
@@ -97,19 +97,95 @@ class App extends React.Component {
       );      
     }else{
       return(
-        <View style={styles.center}>  
-          <Text style={styles.title}>{this.state.syncMessage || ""}</Text>         
-          {this.progress()}
-          {this.state.error?<TouchableOpacity onPress={()=>{this.setState({complete:true})}} style={styles.authButton}>
-            <Text style={styles.authButtonTitle}>ПРОДОЛЖИТЬ</Text>
-          </TouchableOpacity>:null}
+        <View style={styles.content}>
+          <View style={styles.box}>
+            <Image style={styles.logo} source={require('./assets/img/logo.png')}/>
+            <Text style={styles.headTitle}>Sitmaster.kz</Text>
+            <Text style={[styles.title,styles.textCenter]}>Совершенство информационных технологий</Text>
+            {this.props.error?<Text style={styles.error}>{this.props.message}</Text>:null}
+          </View>
+          <View style={styles.box}>
+            <View style={styles.block}>
+              <Text style={[styles.title,styles.textCenter]}>{this.state.syncMessage || ""}</Text>
+            </View>
+            <View style={styles.block}>        
+              {this.progress()}
+            </View>
+            <View style={styles.block}>
+              {this.state.error?<Button rounded success onPress={()=>{this.setState({complete:true})}} block>ПРОДОЛЖИТЬ</Button>:null}
+            </View>
+          </View>
         </View>
       )
     }
   }
 }
-          // <Image style={[styles.canvas,{width:width,height:height}]} source={require('../assets/img/background.png')}/>
-          // <Image style={styles.logo} source={require('../assets/img/bglogo.png')}/>          
+        
+const styles = StyleSheet.create({
+  content:{
+    flex:1,
+    backgroundColor:'#3f51b5',
+    justifyContent: 'center', 
+    padding:30,
+  },
+  box:{
+    justifyContent: 'center',
+    alignItems:'center',
+    backgroundColor:'transparent',
+
+  },
+  logo:{
+    width:100,
+    height:100,
+  },
+  headTitle:{
+    color:'white',
+    fontSize:22,
+  },
+  title:{
+    color:'white',
+    fontSize:14,
+  },
+  textCenter:{
+    textAlign:'center'
+  },
+  block:{
+    marginTop:5,
+    width:300,
+    height:50,
+    backgroundColor:'transparent',
+  },
+  inputBlock:{
+    position:'relative',
+    flex:1,
+    backgroundColor:'transparent',
+    color:'white',
+    padding:10,
+    margin:0,
+    height:20,
+    fontSize:16,
+  },
+  inputIconTouch:{
+    position:'absolute',
+    top:5,
+    right:5,
+    height:25,
+    width:25,
+    backgroundColor:'transparent',
+  },
+  error:{
+    backgroundColor:'transparent',
+    textShadowColor:'#FF3B30',
+    textShadowOffset:{width: 2, height: 2},
+    textShadowRadius:5,
+    color:'white',
+    fontSize:10,
+  },
+  progress:{
+    marginTop: 10,
+    width: (width-16)
+  }
+});
 
 App = codePush(codePushOptions)(App);
 

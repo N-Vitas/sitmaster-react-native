@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
+  Dimensions,
   Text,
   View
 } from 'react-native';
 import { connect } from 'react-redux';
+const {width,height} = Dimensions.get('window');
 
 class Test extends Component {
   render() {
     console.log(this.props)
     return (
-      <View style={[styles.container,{backgroundColor: this.props.bg,}]}>
+      <View style={[styles.container,{backgroundColor: this.props.bg,}]}>        
         <Text style={styles.welcome}>
           Welcome to React Native!!!
         </Text>
@@ -44,6 +46,10 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  progress:{
+    marginTop: 10,
+    width: (width-16)
+  }
 });
 
 // function mapDispatchToProps(dispatch) {

@@ -69,8 +69,6 @@ class Auth extends Component{
     )
   }
 }
-            // <Button theme="dark" text="Войти" disabled={this.props.loaded} raised={true} primary="googleGreen" onPress={this.props.folowAuth.bind(this,this.props)} />
-          //<TouchableOpacity onPress={()=>this.props.resetPass()} style={styles.block}><Text style={styles.title}>Забыли пароль?</Text></TouchableOpacity>
 
 const mapStateToProps = (state) => {
     return {...state.get('session'),

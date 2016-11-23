@@ -21,26 +21,29 @@ Users.schema = {
   }
 };
 
-// class Profile extends Realm.Object {}
-// Profile.schema = {
-//   name:'Profile',  
-//   properties:{
-//     userId:'int',
-//     firstname:'string',
-//     lastname:'string',
-//     country:'string',
-//     city:'string',
-//     background:'string',
-//     email:'string',
-//     countCar:'int',
-//     followed:'int',
-//     follower:'int', 
-//     gravatar_id: {type: 'string', default: ''},
-//   }
-// };
+class Tickets extends Realm.Object {}
+Tickets.schema = {
+  name:'Tickets',  
+  properties:{
+    id:'int',
+    user_id:'int',
+    agent_id:'int',
+    cat_id:'int',
+    cat_level:'int',
+    priorited: 'string',
+    title: 'string',
+    text: 'string',
+    files:'string',
+    json:'string',
+    status:'int',
+    callback:'string',
+    created_at:'int',
+    updated_at:'int',
+  }
+};
 
 export default new Realm({
-  schema: [Users],
+  schema: [Users,Tickets],
   schemaVersion:1,
   // migration:(oldRealm, newRealm)=>{
   //   if(oldRealm.schemaVersion < 1){

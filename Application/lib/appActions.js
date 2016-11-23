@@ -1,4 +1,6 @@
+import realm from './realm';
 const CONNECT_API_URL = "http://api.sitmaster.kz/v1/";
+const CONNECT_WEB_URL = "http://support.sitmaster.kz/";
 const AUTH_CHANGELOGIN = "AUTH_CHANGELOGIN";
 const AUTH_CHANGEPASSWORD = "AUTH_CHANGEPASSWORD";
 const AUTH_START = "AUTH_START";
@@ -6,6 +8,7 @@ const AUTH_STOP = "AUTH_STOP";
 const AUTH_ERROR = "AUTH_ERROR";
 const AUTH_LOGGEIN = "AUTH_LOGGEIN";
 const AUTH_LOGOUT = 'AUTH_LOGOUT';
+const TICKET_LOADED = 'TICKET_LOADED';
 
 function getAuth(dispatch,props){
 	dispatch({type: AUTH_START});
@@ -44,87 +47,65 @@ function getAuth(dispatch,props){
   xmlhttp.send(formData);
 }
 
-function sendCreatePost(dispatch,props,params){
-  dispatch({type:CREATE_POST_SEND_POST});
-  let imageCount = props.createPost.images.length;
-  let postdata = {
-    category:Helpers.getCatName(props.createPost.selected1),    
-  }
-  if(props.createPost.marker)
-    postdata = {...postdata,
-      subcategory:Helpers.getCatName(props.createPost.selected2),
-      location:{
-        lat:props.createPost.marker.coordinate.latitude,
-        lon:props.createPost.marker.coordinate.longitude
-      }
-    }
-  let data = new FormData()
-  data.append('parent_user_id',props.userId||1)
-  imageCount > 0 ? data.append('status', 0): data.append('status', 1);
-  data.append('car_id', 0)
-  data.append('text', props.createPost.text)
-  data.append('data', JSON.stringify(postdata))
-
-  let xhr = new XMLHttpRequest();
-
-  xhr.open('POST',CONNECT_API_URL+'posts?access_token='+props.accessToken,true);
-  xhr.onload = (event)=>{
-    if(event.target.status == 201){
-      dispatch(popRoute('globalApp'));
-      let responseData = JSON.parse(event.target.response);
-      // console.log('sendCreatePost',responseData,props,(responseData.id && props.createPost.images.length > 0))
-      // Отправляем картинки по очереди асинхронно
-      if(imageCount > 0){        
-        let formData = new FormData();
-        let images = props.createPost.images.map((image,i)=>{
-          var str = image.uri.substring(image.path.lastIndexOf('/')+1); 
-          formData.append('Uploads[imageFiles][]',{
-            uri: encodeURI (image.path),
-            name: encodeURI (str),
-            type: 'image/jpeg',
+function updateTickets(dispatch,auth_key){
+  var xmlhttp = new XMLHttpRequest();
+  xmlhttp.open('GET',CONNECT_API_URL+'ticket',true);
+  xmlhttp.setRequestHeader("Content-Type","application/json");
+  xmlhttp.setRequestHeader("X-Key", auth_key);
+  xmlhttp.onload = (event)=>{
+    let responseData = JSON.parse(event.target.response);
+    if(event.target.status == 200){  
+      for(action in responseData){
+        var ticket = realm.objects('Tickets').filtered('id == '+responseData[action].id);
+        if(Array.isArray(ticket) || ticket.length > 0){
+          continue;
+        }
+        realm.write(()=>{
+          realm.create('Tickets',{
+            id:parseInt(responseData[action].id),
+            user_id:parseInt(responseData[action].user_id),
+            agent_id:parseInt(responseData[action].agent_id),
+            cat_id:parseInt(responseData[action].cat_id),
+            cat_level:parseInt(responseData[action].cat_level),
+            priorited:String(responseData[action].priorited),
+            title:String(responseData[action].title),
+            text:String(responseData[action].text),
+            files:String(responseData[action].files || ''),
+            json:String(responseData[action].json || ''),
+            status:parseInt(responseData[action].status),
+            callback:String(responseData[action].callback || ''),
+            created_at:parseInt(responseData[action].created_at),
+            updated_at:parseInt(responseData[action].updated_at || 0), 
           });
-          // data.append('imageFiles',images);
         });
-        // console.log('data image',formData);
-        formData.append('parent_user_id',responseData.parent_user_id);
-        formData.append('post_id', responseData.id);
-        formData.append('category', 'post');
-        let xmlUpload = new XMLHttpRequest();
-        xmlUpload.open('POST',CONNECT_API_URL+'images/create',true);
-        xmlUpload.onload = (event)=>{
-          if(event.target.DONE == 4){  
-            let xmlUpdatePost = new XMLHttpRequest();
-            xmlUpdatePost.open('GET',CONNECT_API_URL+'images/showpost/'+responseData.id,true);
-            xmlUpdatePost.send()
-            // записываем в state
-            dispatch({type:CREATE_POST_PROGRESS,progress:false})  
-            requestPostList(dispatch,props)
-            dispatch({type:CREATE_POST_RESET})
-          }
-          console.log('xmlOnload',event.target.response);
-        };
-        xmlUpload.upload.onprogress = (event)=>{
-          if (event.lengthComputable) {            
-            console.log('xmlUploads',(event.loaded / event.total) * 100);
-            var progress = event.loaded / event.total;
-            dispatch({type:CREATE_POST_PROGRESS,progress:progress})
-          }
-        };
-        setTimeout(()=>{xmlUpload.send(formData)},200);
-      }else{
-        // записываем в state
-        dispatch(popRoute('globalApp'))   
-        requestPostList(dispatch,props)
-        dispatch({type:CREATE_POST_RESET})      
-      }      
+      } 
+      // dispatch({
+      //   type: TICKET_LOADED,
+      //   id:parseInt(responseData.id),
+      //   user_id:parseInt(responseData.user_id),
+      //   agent_id:parseInt(responseData.agent_id),
+      //   cat_id:parseInt(responseData.cat_id),
+      //   cat_level:parseInt(responseData.cat_level),
+      //   priorited:String(responseData.priorited),
+      //   title:String(responseData.title),
+      //   text:String(responseData.text),
+      //   files:String(responseData.files),
+      //   json:String(responseData.json),
+      //   status:parseInt(responseData.status),
+      //   callback:responseData.callback),
+      //   created_at:parseInt(responseData.created_at),
+      //   updated_at:parseInt(responseData.updated_at), 
+      // });
+      return;
     }
-    // console.log('Onload',event.target.status,event.target.response);
-  };
-  xhr.send(data);
+    console.log('xmlOnload done',event.target.response);
+  }
+  xmlhttp.send(null);
 }
 
 const AppActions = {
 	CONNECT_API_URL:CONNECT_API_URL,
+  CONNECT_WEB_URL:CONNECT_WEB_URL,
 	AUTH_CHANGELOGIN:AUTH_CHANGELOGIN,
 	AUTH_CHANGEPASSWORD:AUTH_CHANGEPASSWORD,
 	AUTH_START:AUTH_START,
@@ -132,7 +113,9 @@ const AppActions = {
 	AUTH_ERROR:AUTH_ERROR,
 	AUTH_LOGGEIN:AUTH_LOGGEIN,
 	AUTH_LOGOUT:AUTH_LOGOUT,
+  TICKET_LOADED:TICKET_LOADED,
 	getAuth:getAuth,
+  updateTickets:updateTickets,
 }
 
 export default AppActions;
