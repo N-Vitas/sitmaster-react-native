@@ -91,6 +91,11 @@ android {
         applicationId "com.sitmaster"
         minSdkVersion 16
         targetSdkVersion 22
+        manifestPlaceholders = [
+            manifestApplicationId: "com.sitmaster",
+            onesignal_app_id: "e77bf691-6317-4ba1-b943-f9d0ccd28e72",
+            onesignal_google_project_number: "685492634656"
+        ]
         versionCode 1
         versionName "1.0"
         ndk {
@@ -127,6 +132,9 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-onesignal')
+    compile project(':react-native-vector-icons')
+    compile project(':react-native-google-analytics-bridge')
     compile project(':realm')
     compile project(':react-native-image-picker')
     compile project(':react-native-code-push')

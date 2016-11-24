@@ -6,7 +6,7 @@ import {
   Text,
   View
 } from 'react-native';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 const {width,height} = Dimensions.get('window');
 
 class Test extends Component {
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
 //   };
 // }
 
-export default connect(/*mapStateToProps, mapDispatchToProps*/)(Test); 
+export default Test; 
